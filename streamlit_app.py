@@ -170,7 +170,7 @@ with st.expander("Data Modeling", expanded=True):
     eval_df["difference"] = round(abs(eval_df["actual"]-eval_df["pred"]),2) # Checking the difference between actual(target varible and predictions (train features)
     eval_df.head() # huge diference on the predicted price
 
-    
+
     
     # Modelos de Machine Learning
     results = {}
@@ -218,7 +218,6 @@ with st.expander("Data Modeling", expanded=True):
     model1_RMSE = np.sqrt(model1_MSE)
     model1_MAE = mean_absolute_error(y_test, predictions_xgb)
 
-    import streamlit as st
 
 # Exibir as métricas de maneira visual usando st.metric
     st.metric("R² Score", f"{model1_R2:.2f}")
