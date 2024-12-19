@@ -249,36 +249,36 @@ with st.expander("Data Modeling", expanded=True):
     X_test_scaled = scaler.transform(X_test)
 
  # Initiating the Xboostedd Model
-   XGboosted_model_normalize = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1)
-   XGboosted_model_normalize.fit(X_train_scaled, y_train)
-   XGboosted_model_normalize_predictions = XGboosted_model_normalize.predict(X_test_scaled) 
-   XGboosted_model_normalize_predictions
+    XGboosted_model_normalize = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1)
+    XGboosted_model_normalize.fit(X_train_scaled, y_train)
+    XGboosted_model_normalize_predictions = XGboosted_model_normalize.predict(X_test_scaled) 
+    XGboosted_model_normalize_predictions
 
-  results_df_ml_2 =  pd.DataFrame({'Actual': y_test, 'Predicted': XGboosted_model_normalize_predictions})
-  results_df_ml_2.head()
+   results_df_ml_2 =  pd.DataFrame({'Actual': y_test, 'Predicted': XGboosted_model_normalize_predictions})
+   results_df_ml_2.head()
 
 # Exibir as métricas de maneira visual usando st.metric
-  st.metric("R² Score", f"{model2_R2:.2f}")
-  st.metric("MSE (Mean Squared Error)", f"{model2_MSE:.2f}")
-  st.metric("RMSE (Root Mean Squared Error)", f"{model2_RMSE:.2f}")
-  st.metric("MAE (Mean Absolute Error)", f"{model2_MAE:.2f}")
+   st.metric("R² Score", f"{model2_R2:.2f}")
+   st.metric("MSE (Mean Squared Error)", f"{model2_MSE:.2f}")
+   st.metric("RMSE (Root Mean Squared Error)", f"{model2_RMSE:.2f}")
+   st.metric("MAE (Mean Absolute Error)", f"{model2_MAE:.2f}")
 
-  color = '#4682B4'
-  n_features = len(df.columns)
-  ncols = 4  # Número de colunas fixo
-  nrows = (n_features // ncols) + (n_features % ncols > 0)  # Número de linhas necessário
-  fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(20, 16))
-  axes = axes.flatten()
+   color = '#4682B4'
+   n_features = len(df.columns)
+   ncols = 4  # Número de colunas fixo
+   nrows = (n_features // ncols) + (n_features % ncols > 0)  # Número de linhas necessário
+   fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(20, 16))
+   axes = axes.flatten()
 
- for i, ax in enumerate(axes):
+  for i, ax in enumerate(axes):
     if i >= n_features:
         ax.set_visible(False)  # esconder gráficos não usados
         continue
     ax.hist(df.iloc[:, i], bins=30, color=color, edgecolor='black')
     ax.set_title(df.columns[i])
 
-  plt.tight_layout()
-  plt.show()
+   plt.tight_layout()
+   plt.show()
 
 
 
