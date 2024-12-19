@@ -126,7 +126,9 @@ def correlation_matrix(df):
     
     st.pyplot(fig)  # Passar fig para evitar erro
 
-# Secções principais
+# Secções principais com Expander
+
+# Expander Data Understanding
 with st.expander('Data Understanding'):
     st.header('Data Understanding')
 
@@ -156,3 +158,14 @@ with st.expander('Data Understanding'):
     # Exibir a matriz de correlação
     st.subheader('Correlation Matrix')
     correlation_matrix(df)
+
+# Expander Data Cleaning
+with st.expander('Data Cleaning'):
+    st.subheader('Data Cleaning Process')
+
+    # Limpeza dos dados
+    cleaned_df = clean_data(df)
+    st.write(f'Rows with missing values: {cleaned_df.isna().any(axis=1).sum()}')
+    st.write(f'Duplicate rows: {cleaned_df[cleaned_df.duplicated()].shape[0]}')
+    st.write("Cleaned DataFrame preview:")
+    st.write(cleaned_df.head())
