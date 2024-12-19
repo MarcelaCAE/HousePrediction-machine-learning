@@ -232,7 +232,7 @@ with st.expander("Data Modeling", expanded=True):
 }
 
 # Preparando o dicionário de resultados
-   results = {}
+    results = {}
 
 # Loop para treinar e avaliar os modelos
    for model_name, model in models.items():
