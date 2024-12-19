@@ -131,29 +131,28 @@ with st.expander('Data Understanding'):
     st.header('Data Understanding')
 
     # Exibir os dados limpos
-    with st.expander('Data Cleaning'):
-        cleaned_df = clean_data(df)
+    cleaned_df = clean_data(df)
 
     # Exibir as informações sobre o dataframe
-    with st.expander('Info About DataFrame'):
-        info_about_dataframe(df)
+    st.subheader('Info About DataFrame')
+    info_about_dataframe(df)
 
     # Exibir estatísticas descritivas
-    with st.expander('Descriptive Statistics'):
-        descriptive_statistics(df)
+    st.subheader('Descriptive Statistics')
+    descriptive_statistics(df)
 
     # Explorar as distribuições das variáveis
-    with st.expander('Exploration'):
-        exploration(df)
+    st.subheader('Exploration')
+    exploration(df)
 
     # Explorar a distribuição do target (preço)
-    with st.expander('Exploration of Target Variable'):
-        explorate_target(df)
+    st.subheader('Exploration of Target Variable')
+    explorate_target(df)
 
     # Exibir os outliers
-    with st.expander('Exploration of Outliers'):
-        exploration_outliers(df)
+    st.subheader('Exploration of Outliers')
+    exploration_outliers(df)
 
     # Exibir a matriz de correlação
-    with st.expander('Correlation Matrix'):
-        correlation_matrix(df)
+    st.subheader('Correlation Matrix')
+    correlation_matrix(df)
