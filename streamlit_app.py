@@ -7,6 +7,9 @@ import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression, Lasso, Ridge
+from sklearn.tree import DecisionTreeRegressor
+
 
 # Section: Dataset Overview (Everything Inside This Expander)
 with st.expander('📄 Data Understading', expanded=True):
