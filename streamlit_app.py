@@ -34,26 +34,28 @@ df_analysis['Predicted'] = df['Predicted']  # Substitua com a coluna de previsõ
 # Calcular a diferença percentual entre o valor previsto e o valor real
 df_analysis['percentage_diff'] = 100 * (df_analysis['Predicted'] - df_analysis['price']) / df_analysis['price']
 
-# Adicionar a feature selecionada ao DataFrame
-df_analysis['selected_feature'] = df_analysis[selected_feature]
-
-# Excluir a feature selecionada do DataFrame
-df_selected = df_analysis[['price', 'Predicted', 'percentage_diff', 'selected_feature']]
+# Adicionar a coluna date_month ao DataFrame
+df_analysis['date_month'] = df['date_month']  # Utilizando a coluna 'date_month' existente
 
 # Exibir os resultados
-st.write(f"Analisando a diferença para a feature: {selected_feature}")
-st.write(df_selected.head())
+st.write(f"Analisando a média dos preços reais e previstos por mês")
 
-# Criar o gráfico de linha dentro do expander
-with st.expander(f"📈 Visualização: Price vs Predicted para {selected_feature}", expanded=False):
-    plt.figure(figsize=(10,6))
-    plt.plot(df_analysis['selected_feature'], df_analysis['price'], label='Price', color='blue', marker='o', linestyle='-', alpha=0.7)
-    plt.plot(df_analysis['selected_feature'], df_analysis['Predicted'], label='Predicted', color='red', marker='x', linestyle='--', alpha=0.7)
+# Agrupar os dados por mês e calcular a média do preço real e do preço previsto
+monthly_avg = df_analysis.groupby('date_month')[['price', 'Predicted']].mean().reset_index()
+
+# Criar o gráfico de barras para as médias mensais de preço e preço previsto
+with st.expander(f"📊 Média Mensal do Preço Real e Preço Previsto", expanded=False):
+    plt.figure(figsize=(12,6))
+    
+    # Plotando a média de preço real e previsto por mês
+    plt.bar(monthly_avg['date_month'], monthly_avg['price'], label='Average Price', color='skyblue', alpha=0.7)
+    plt.bar(monthly_avg['date_month'], monthly_avg['Predicted'], label='Average Predicted Price', color='salmon', alpha=0.7, width=0.4)
 
     # Adicionar título e rótulos aos eixos
-    plt.title(f'Price vs Predicted - Feature: {selected_feature}')
-    plt.xlabel(selected_feature)
-    plt.ylabel('Price')
+    plt.title(f'Média do Preço Real e Preço Previsto por Mês')
+    plt.xlabel('Mês')
+    plt.ylabel('Preço Médio')
+    plt.xticks(rotation=45)
     plt.legend()
 
     # Exibir o gráfico no Streamlit
