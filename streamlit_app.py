@@ -159,5 +159,5 @@ with st.expander("Data Modeling", expanded=True):
 
     # Copiar o dataframe para a modelagem
     df_machine_learning = df.copy()
-    df_machine_learning.head()
+    df_machine_learning.head(10)
     
