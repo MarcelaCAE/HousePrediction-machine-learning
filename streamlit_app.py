@@ -41,17 +41,18 @@ monthly_avg = df_analysis.groupby('date_month')[['price', 'Predicted', 'selected
 st.write(f"Analisando a média dos preços reais, previstos e a feature selecionada por mês")
 
 # Criar o gráfico de linha para as médias mensais de preço e preço previsto
-with st.expander(f"📊 Média Mensal do Preço Real e Preço Previsto", expanded=False):
+with st.expander(f"📊 Média Mensal do Preço Real, Preço Previsto e {selected_feature}", expanded=False):
     plt.figure(figsize=(12,6))
     
-    # Plotando as linhas para preço real e previsto por mês
+    # Plotando as linhas para preço real, preço previsto e a feature selecionada por mês
     plt.plot(monthly_avg['date_month'], monthly_avg['price'], label='Average Price', color='skyblue', marker='o')
     plt.plot(monthly_avg['date_month'], monthly_avg['Predicted'], label='Average Predicted Price', color='salmon', marker='o')
+    plt.plot(monthly_avg['date_month'], monthly_avg['selected_feature'], label=f'Average {selected_feature}', color='green', marker='o')
 
     # Adicionar título e rótulos aos eixos
-    plt.title(f'Média do Preço Real e Preço Previsto por Mês')
+    plt.title(f'Média do Preço Real, Preço Previsto e {selected_feature} por Mês')
     plt.xlabel('Mês')
-    plt.ylabel('Preço Médio')
+    plt.ylabel('Valor Médio')
     plt.xticks(rotation=45)
     plt.legend()
 
