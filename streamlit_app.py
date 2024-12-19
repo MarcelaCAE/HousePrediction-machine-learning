@@ -27,34 +27,38 @@ with st.sidebar:
     st.header('Input Features')
     selected_feature = st.selectbox('Select a feature to analyze', Features.columns)
 
-# Adicionar previsões (garanta que a coluna 'Predicted' exista em df)
-df['Predicted'] = df['Predicted']
 
-# Criar o DataFrame de análise
+# Assuming `Features`, `Target`, and `df` are already loaded
+# Create the DataFrame for analysis
 df_analysis = Features.copy()
-df_analysis['price'] = Target  # Valores reais
-df_analysis['Predicted'] = df['Predicted']  # Valores previstos
+df_analysis['price'] = Target  # Actual values
+df_analysis['Predicted'] = df['Predicted']  # Predicted values
 
-# Adicionar o nome da feature selecionada ao DataFrame
+# Sidebar for user input
+st.sidebar.title("Dynamic Feature Selection")
+selected_feature = st.sidebar.selectbox(
+    "Select a feature to group by:",
+    df_analysis.columns,  # Assuming all columns are valid; adjust as needed
+)
+
+# Add the selected feature to the DataFrame
 df_analysis['selected_feature'] = df_analysis[selected_feature]
 
-grouped = df_analysis.groupby(['selected_feature', 'date_month']).mean()
+# Grouping by selected feature and date_month to calculate mean
+grouped = df_analysis.groupby(['selected_feature', 'date_month'])[['price', 'Predicted']].mean()
 
-# Calculating percentage changes and growth percentages
+# Calculating percentage changes
 grouped['price_pct_change'] = grouped.groupby(level=0)['price'].pct_change() * 100
 grouped['Predicted_pct_change'] = grouped.groupby(level=0)['Predicted'].pct_change() * 100
-grouped['growth_percentage'] = (
-    (grouped['Predicted'] - grouped['price']) / grouped['price']
-) * 100
 
 # Resetting the index for better readability
 grouped_reset = grouped.reset_index()
 
 # Displaying the data in Streamlit
 st.title("Analysis by Selected Feature")
-st.write("### Grouped Data")
-st.dataframe(grouped_reset)
+st.write("### Grouped Data (Only Selected Features)")
+st.dataframe(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']])
 
 # Transposing the data (optional)
 if st.checkbox("Transpose DataFrame"):
-    st.write(grouped_reset.T)
+    st.write(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
