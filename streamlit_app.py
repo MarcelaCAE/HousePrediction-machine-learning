@@ -167,6 +167,7 @@ df['date_day'] = df['date'].dt.day
 
 price = df.pop("price")
 df["price"] = price
+df = df.drop(['id', 'date'], axis=1)
 
 # Supondo que você já tenha o dataframe df carregado com as colunas necessárias
 
