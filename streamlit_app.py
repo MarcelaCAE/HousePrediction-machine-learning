@@ -6,8 +6,8 @@ st.title('🎈 HousePrediction - Machine Learning')
 
 st.info('This is a machine learning model to predict house prices.')
 
-# Section 1: Dataset Overview and Description
-with st.expander('📄 Dataset Description', expanded=True):
+# Section: Dataset Overview and Description
+with st.expander('📄 Dataset Overview and Description', expanded=True):
     st.subheader('Key Variables')
     st.markdown("""
     The following dataset consists of **21 columns** across **21,613 rows**. The majority of our data types are numeric, including **15 integer** and **5 float** columns.
@@ -40,8 +40,6 @@ with st.expander('📄 Dataset Description', expanded=True):
     [King County Houses Dataset on Kaggle](https://www.kaggle.com/datasets/minasameh55/king-country-houses-aa)
     """)
 
-# Section 2: Displaying the Original Dataset
-with st.expander('📊 View Original Dataset', expanded=True):  
     st.subheader('Original Dataset')
     # Load the dataset
     url = 'https://raw.githubusercontent.com/MarcelaCAE/HousePrediction-machine-learning/refs/heads/master/king_%20country_%20houses_aa.csv'
