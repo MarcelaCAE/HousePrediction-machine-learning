@@ -9,10 +9,7 @@ st.title('🎈 HousePrediction-machine-learning')
 st.info('This is a machine learning model')
 
 # Carregar o dataset
-with st.expander('Dataset'):
-    st.write('**Raw Data**')
-    df = pd.read_csv('https://raw.githubusercontent.com/MarcelaCAE/HousePrediction-machine-learning/refs/heads/master/king_%20country_%20houses_aa.csv')
-    st.write(df.head())  # Exibe as primeiras linhas do dataset
+df = pd.read_csv('https://raw.githubusercontent.com/MarcelaCAE/HousePrediction-machine-learning/refs/heads/master/king_%20country_%20houses_aa.csv')
 
 # Função para limpar os dados
 def clean_data(data):
