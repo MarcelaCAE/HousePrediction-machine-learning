@@ -19,17 +19,8 @@ with st.expander('📄 Data', expanded=True):
     Target = df['price']  # A variável alvo 'price'
     Features = df.drop(columns=["price", "Predicted"])  # As features (sem a coluna 'price' e 'Predicted')
 
-
-
-# Adicionar barra lateral para selecionar a feature
-import streamlit as st
-import pandas as pd
-
-# Exemplo: Carregar dados fictícios (substitua pelos seus dados reais)
-# Features: DataFrame com variáveis independentes
-# Target: Série ou coluna com os valores reais
-# df: DataFrame com as previsões (incluindo a coluna 'Predicted')
-# Certifique-se de que a coluna 'date_month' já exista no Features.
+with st.expander('📄 Features', expanded=True):
+    Features.head(30)
 
 # Adicionar barra lateral para selecionar a feature
 with st.sidebar:
@@ -47,23 +38,23 @@ df_analysis['Predicted'] = df['Predicted']  # Valores previstos
 # Adicionar o nome da feature selecionada ao DataFrame
 df_analysis['selected_feature'] = df_analysis[selected_feature]
 
-# Extrair o mês da coluna `date_month` para agrupar
-df_analysis['month'] = df_analysis['date_month'].dt.month  # Extrai o número do mês
+grouped = df_analysis.groupby(['selected_feature', 'date_month']).mean()
 
-# Realizar o agrupamento por `month` e calcular as médias
-df_grouped = (
-    df_analysis.groupby('month')
-    .agg(
-        avg_price=('price', 'mean'),
-        avg_predicted=('Predicted', 'mean'),
-        avg_selected_feature=('selected_feature', 'mean')
-    )
-    .reset_index()
-)
+# Calculating percentage changes and growth percentages
+grouped['price_pct_change'] = grouped.groupby(level=0)['price'].pct_change() * 100
+grouped['Predicted_pct_change'] = grouped.groupby(level=0)['Predicted'].pct_change() * 100
+grouped['growth_percentage'] = (
+    (grouped['Predicted'] - grouped['price']) / grouped['price']
+) * 100
 
-# Adicionar o nome da feature selecionada ao DataFrame agrupado
-df_grouped['feature_name'] = selected_feature
+# Resetting the index for better readability
+grouped_reset = grouped.reset_index()
 
-# Exibir os resultados na interface do Streamlit
-st.write(f"Análise agregada por mês para a feature: {selected_feature}")
-st.dataframe(df_grouped)
+# Displaying the data in Streamlit
+st.title("Analysis by Selected Feature")
+st.write("### Grouped Data")
+st.dataframe(grouped_reset)
+
+# Transposing the data (optional)
+if st.checkbox("Transpose DataFrame"):
+    st.write(grouped_reset.T)
