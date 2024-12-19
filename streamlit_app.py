@@ -260,6 +260,11 @@ with st.expander("Data Modeling", expanded=True):
 results_df_ml_2 =  pd.DataFrame({'Actual': y_test, 'Predicted': XGboosted_model_normalize_predictions})
 results_df_ml_2.head()
 
+model2_R2 = r2_score(y_test, XGboosted_model_normalize_predictions)
+model2_MSE = mean_squared_error(y_test, XGboosted_model_normalize_predictions)
+model2_RMSE = np.sqrt(model2_MSE)
+model2_MAE = mean_absolute_error(y_test, XGboosted_model_normalize_predictions)
+
 # Exibir as métricas de maneira visual usando st.metric
 st.metric("R² Score", f"{model2_R2:.2f}")
 st.metric("MSE (Mean Squared Error)", f"{model2_MSE:.2f}")
@@ -267,7 +272,7 @@ st.metric("RMSE (Root Mean Squared Error)", f"{model2_RMSE:.2f}")
 st.metric("MAE (Mean Absolute Error)", f"{model2_MAE:.2f}")
 
 color = '#4682B4'
-n_features = len(df.columns)
+n_features = len(X.columns)
 ncols = 4  # Número de colunas fixo
 nrows = (n_features // ncols) + (n_features % ncols > 0)  # Número de linhas necessário
 fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(20, 16))
@@ -281,7 +286,7 @@ for i, ax in enumerate(axes):
     ax.set_title(df.columns[i])
 
 plt.tight_layout()
-plt.show()
+st.pyplot(fig)
 
 
 
