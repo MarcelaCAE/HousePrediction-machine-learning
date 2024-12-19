@@ -16,7 +16,7 @@ with st.expander('📄 Data', expanded=True):
     
     # Definir a variável target 'price' e as features
     Target = df['price']  # A variável alvo 'price'
-    Features = df.drop(columns=[["price","Predicted"]])  # As features (sem a coluna 'price')
+    Features = df.drop(columns=["price", "Predicted"])  # As features (sem a coluna 'price' e 'Predicted')
 
 # Barra lateral para escolher a feature
 with st.sidebar:
@@ -24,13 +24,14 @@ with st.sidebar:
     selected_feature = st.selectbox('Select a feature to analyze', Features.columns)
 
 # Carregar previsões (isso deve ser feito previamente com o seu modelo, mas vamos gerar previsões aqui)
-# Como você mencionou que as previsões já estão no seu CSV, então vamos assumir que elas estão lá
-df['predicted'] = df['predicted']  # Caso já tenha a coluna de previsões no CSV
+# Assumindo que as previsões já estão no seu CSV
+# A coluna de previsões é chamada 'Predicted' no seu CSV, então a linha correta seria:
+df['Predicted'] = df['Predicted']  # Apenas para garantir que a coluna esteja presente
 
 # Criar um DataFrame com a feature selecionada, preço real e previsão
 df_analysis = Features.copy()
 df_analysis['price'] = Target
-df_analysis['Predicted'] = df['predicted']  # Substitua com a coluna de previsões do seu CSV
+df_analysis['Predicted'] = df['Predicted']  # Substitua com a coluna de previsões do seu CSV
 
 # Calcular a diferença percentual entre o preço real e o previsto
 df_analysis['percentage_diff'] = 100 * abs(df_analysis['price'] - df_analysis['Predicted']) / df_analysis['price']
@@ -44,4 +45,5 @@ df_selected = df_analysis[['price', 'Predicted', 'percentage_diff', 'selected_fe
 # Exibir os resultados
 st.write(f"Analisando a feature: {selected_feature}")
 st.write(df_selected.head())
+
 
