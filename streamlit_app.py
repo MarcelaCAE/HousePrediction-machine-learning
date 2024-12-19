@@ -256,15 +256,15 @@ with st.expander("Data Modeling", expanded=True):
     results_df_ml = results_df_ml.round(2)
 
 # Exibindo os resultados no Streamlit
-     st.write("### Model Performance Comparison")
-     st.dataframe(results_df_ml)
+    st.write("### Model Performance Comparison")
+    st.dataframe(results_df_ml)
 
 
 # ### Modelo XGBoost com todos os dados (representado como modelo1)
-     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-     model1 = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1)
-     model1.fit(X_train, y_train)
-     predictions_xgb = model1.predict(X_test)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model1 = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1)
+    model1.fit(X_train, y_train)
+    predictions_xgb = model1.predict(X_test)
 
 # Exibindo métricas para o modelo 1
     model1_R2 = r2_score(y_test, predictions_xgb)
@@ -282,12 +282,12 @@ with st.expander("Data Modeling", expanded=True):
     st.markdown("### Actual vs Predicted Prices for XGBoost")
 
 # Plotando os valores reais vs previstos
-   plt.figure(figsize=(8, 6))
-   plt.scatter(y_test, predictions_xgb, color='blue', alpha=0.5)
-   plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
-   plt.title('XGBoost: Actual vs Predicted')
-   plt.xlabel('Actual Values')
-   plt.ylabel('Predicted Values')
-   st.pyplot(plt)
+    plt.figure(figsize=(8, 6))
+    plt.scatter(y_test, predictions_xgb, color='blue', alpha=0.5)
+    plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
+    plt.title('XGBoost: Actual vs Predicted')
+    plt.xlabel('Actual Values')
+    plt.ylabel('Predicted Values')
+    st.pyplot(plt)
 
 
