@@ -30,6 +30,16 @@ import pandas as pd
 # Certifique-se de que a coluna 'date_month' já exista no Features.
 
 # Adicionar barra lateral para selecionar a feature
+import streamlit as st
+import pandas as pd
+
+# Exemplo: Carregar dados fictícios (substitua pelos seus dados reais)
+# Features: DataFrame com variáveis independentes
+# Target: Série ou coluna com os valores reais
+# df: DataFrame com as previsões (incluindo a coluna 'Predicted')
+# Certifique-se de que a coluna 'date_month' já exista no Features.
+
+# Adicionar barra lateral para selecionar a feature
 with st.sidebar:
     st.header('Input Features')
     selected_feature = st.selectbox('Select a feature to analyze', Features.columns)
@@ -48,10 +58,16 @@ df_analysis['percentage_diff'] = 100 * (df_analysis['Predicted'] - df_analysis['
 # Adicionar a feature selecionada ao DataFrame
 df_analysis['selected_feature'] = df_analysis[selected_feature]
 
-# Exibir os resultados na interface do Streamlit
-st.write(f"Analisando a diferença para a feature: {selected_feature}")
+# Realizar o agrupamento por `date_month` e calcular as médias
+df_grouped = (
+    df_analysis.groupby('date_month')
+    .agg(avg_price=('price', 'mean'),
+         avg_predicted=('Predicted', 'mean'))
+    .reset_index()
+)
 
-# Exibir o DataFrame de forma interativa
-st.dataframe(df_analysis[['date_month', selected_feature, 'price', 'Predicted', 'percentage_diff']])
+# Exibir os resultados na interface do Streamlit
+st.write(f"Análise agregada por mês")
+st.dataframe(df_grouped)
 
 
