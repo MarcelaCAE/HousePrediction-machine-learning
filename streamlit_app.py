@@ -23,7 +23,7 @@ def clean_data(data):
 
 # Função para exibir informações sobre o DataFrame
 def info_about_dataframe(df):
-    st.write("\n### Informações sobre o DataFrame:")
+    st.write("### Informações sobre o DataFrame:")
     st.write(f"Shape do DataFrame: {df.shape}")
     st.write(f"Tipos de dados:\n{df.dtypes}")
     st.write("\nInformações detalhadas sobre o DataFrame:")
@@ -32,7 +32,6 @@ def info_about_dataframe(df):
 # Função para exibir as estatísticas descritivas e IQR
 def descriptive_statistics(df):
     st.write("### Descriptive Statistics, IQR, and Outliers...")
-    
     numerical_cols = df.select_dtypes(include=['int64', 'float64']).columns
     desc_stats = df[numerical_cols].describe().T
     
@@ -98,23 +97,19 @@ def exploration_outliers(df):
             ax.set_visible(False)  # Esconde os subgráficos não utilizados
             continue
         
-        # Criar o boxplot para a coluna
         ax.boxplot(df[numeric_cols[i]].dropna(), vert=False, patch_artist=True, 
                 boxprops=dict(facecolor=color, color='black'), 
                 medianprops=dict(color='yellow'), whiskerprops=dict(color='black'), 
                 capprops=dict(color='black'), flierprops=dict(marker='o', color='red', markersize=5))
-        ax.set_title(numeric_cols[i], fontsize=10)  # Definir o título como o nome da coluna
-        ax.tick_params(axis='x', labelsize=8)  # Ajustar os rótulos do eixo x para melhor visibilidade
+        ax.set_title(numeric_cols[i], fontsize=10)  
+        ax.tick_params(axis='x', labelsize=8)  
     
-    # Ajustar layout para melhor espaçamento
     plt.tight_layout()
-    st.pyplot(fig)  # Passar fig para evitar erro
+    st.pyplot(fig)
 
 # Correlation Matrix
 def correlation_matrix(df):
     st.write("### Correlation Matrix")
-    
-    # Remover ou preencher valores NaN antes de calcular a correlação
     df_clean = df.select_dtypes(include=['float64', 'int64']).dropna()  # Remove colunas não numéricas e NaNs
     corr = df_clean.corr(method='pearson').round(2)
     
@@ -123,49 +118,26 @@ def correlation_matrix(df):
     mask = np.triu(np.ones_like(corr, dtype=bool))
     sns.heatmap(corr, mask=mask, annot=True, cmap=sns.diverging_palette(230, 30, as_cmap=True), 
                 vmin=-1, vmax=1, center=0, annot_kws={"fontsize": 8}, ax=ax)
-    
-    st.pyplot(fig)  # Passar fig para evitar erro
+    st.pyplot(fig)
 
-# Secções principais com Expander
+# Estrutura principal com Expanders para cada função
+with st.expander('Clean Data'):
+    clean_data(df)
 
-# Expander Data Understanding
-with st.expander('Data Understanding'):
-    st.header('Data Understanding')
-
-    # Exibir os dados limpos
-    cleaned_df = clean_data(df)
-
-    # Exibir as informações sobre o dataframe
-    st.subheader('Info About DataFrame')
+with st.expander('Info About DataFrame'):
     info_about_dataframe(df)
 
-    # Exibir estatísticas descritivas
-    st.subheader('Descriptive Statistics')
+with st.expander('Descriptive Statistics'):
     descriptive_statistics(df)
 
-    # Explorar as distribuições das variáveis
-    st.subheader('Exploration')
+with st.expander('Exploration of Features'):
     exploration(df)
 
-    # Explorar a distribuição do target (preço)
-    st.subheader('Exploration of Target Variable')
+with st.expander('Target Exploration'):
     explorate_target(df)
 
-    # Exibir os outliers
-    st.subheader('Exploration of Outliers')
+with st.expander('Outlier Exploration'):
     exploration_outliers(df)
 
-    # Exibir a matriz de correlação
-    st.subheader('Correlation Matrix')
+with st.expander('Correlation Matrix'):
     correlation_matrix(df)
-
-# Expander Data Cleaning
-with st.expander('Data Cleaning'):
-    st.subheader('Data Cleaning Process')
-
-    # Limpeza dos dados
-    cleaned_df = clean_data(df)
-    st.write(f'Rows with missing values: {cleaned_df.isna().any(axis=1).sum()}')
-    st.write(f'Duplicate rows: {cleaned_df[cleaned_df.duplicated()].shape[0]}')
-    st.write("Cleaned DataFrame preview:")
-    st.write(cleaned_df.head())
