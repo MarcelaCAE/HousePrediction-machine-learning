@@ -13,7 +13,7 @@ with st.expander('📄 Dataset Overview', expanded=True):
     url = 'https://raw.githubusercontent.com/MarcelaCAE/HousePrediction-machine-learning/refs/heads/master/king_%20country_%20houses_aa.csv'
     df = pd.read_csv(url)
 
-    st.dataframe(df.head(20))  # Interactive display of the first few rows
+    st.dataframe(df.head(10))  # Interactive display of the first few rows
 
     # Additional dataset details
     st.write(f'**Number of Rows and Columns:** {df.shape[0]} rows and {df.shape[1]} columns.')
