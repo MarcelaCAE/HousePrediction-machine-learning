@@ -40,7 +40,7 @@ df_analysis['selected_feature'] = df_analysis[selected_feature]
 
 with st.expander('📄 Features', expanded=True):
     # Grouping by selected feature and date_month to calculate mean
-    grouped = df_analysis.groupby(['selected_feature', 'date_month'])[['price', 'Predicted']].mean()
+    grouped = df_analysis.groupby(['selected_feature', 'date_month'])[['selected_feature', 'date_month']].mean()
 
 # Calculating percentage changes
     grouped['price_pct_change'] = grouped.groupby(level=0)['price'].pct_change() * 100
