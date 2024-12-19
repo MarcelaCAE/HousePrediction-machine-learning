@@ -232,12 +232,12 @@ with st.expander("Data Modeling", expanded=True):
 }
 
 # Preparando o dicionário de resultados
-results = {}
+   results = {}
 
 # Loop para treinar e avaliar os modelos
-for model_name, model in models.items():
-    model.fit(X_train, y_train)
-    predictions = model.predict(X_test)
+   for model_name, model in models.items():
+     model.fit(X_train, y_train)
+     predictions = model.predict(X_test)
     
     MSE = mean_squared_error(y_test, predictions)
     RMSE = np.sqrt(MSE)
@@ -252,42 +252,42 @@ for model_name, model in models.items():
     }
 
 # Convertendo os resultados em um DataFrame
-results_df_ml = pd.DataFrame(results).T
-results_df_ml = results_df_ml.round(2)
+   results_df_ml = pd.DataFrame(results).T
+   results_df_ml = results_df_ml.round(2)
 
 # Exibindo os resultados no Streamlit
-st.write("### Model Performance Comparison")
-st.dataframe(results_df_ml)
+   st.write("### Model Performance Comparison")
+   st.dataframe(results_df_ml)
 
 
 # ### Modelo XGBoost com todos os dados (representado como modelo1)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-model1 = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1)
-model1.fit(X_train, y_train)
-predictions_xgb = model1.predict(X_test)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model1 = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1)
+    model1.fit(X_train, y_train)
+    predictions_xgb = model1.predict(X_test)
 
 # Exibindo métricas para o modelo 1
-model1_R2 = r2_score(y_test, predictions_xgb)
-model1_MSE = mean_squared_error(y_test, predictions_xgb)
-model1_RMSE = np.sqrt(model1_MSE)
-model1_MAE = mean_absolute_error(y_test, predictions_xgb)
+   model1_R2 = r2_score(y_test, predictions_xgb)
+   model1_MSE = mean_squared_error(y_test, predictions_xgb)
+   model1_RMSE = np.sqrt(model1_MSE)
+   model1_MAE = mean_absolute_error(y_test, predictions_xgb)
 
-st.write("### XGBoost Model Performance")
-st.write(f"R² Score: {model1_R2}")
-st.write(f"MSE (Mean Squared Error): {model1_MSE}")
-st.write(f"RMSE (Root Mean Squared Error): {model1_RMSE}")
-st.write(f"MAE (Mean Absolute Error): {model1_MAE}")
+   st.write("### XGBoost Model Performance")
+   st.write(f"R² Score: {model1_R2}")
+   st.write(f"MSE (Mean Squared Error): {model1_MSE}")
+   st.write(f"RMSE (Root Mean Squared Error): {model1_RMSE}")
+   st.write(f"MAE (Mean Absolute Error): {model1_MAE}")
 
 # ### Plotando Real vs Previsões
-st.markdown("### Actual vs Predicted Prices for XGBoost")
+   st.markdown("### Actual vs Predicted Prices for XGBoost")
 
 # Plotando os valores reais vs previstos
-plt.figure(figsize=(8, 6))
-plt.scatter(y_test, predictions_xgb, color='blue', alpha=0.5)
-plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
-plt.title('XGBoost: Actual vs Predicted')
-plt.xlabel('Actual Values')
-plt.ylabel('Predicted Values')
-st.pyplot(plt)
+  plt.figure(figsize=(8, 6))
+  plt.scatter(y_test, predictions_xgb, color='blue', alpha=0.5)
+  plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
+  plt.title('XGBoost: Actual vs Predicted')
+  plt.xlabel('Actual Values')
+  plt.ylabel('Predicted Values')
+  st.pyplot(plt)
 
 
