@@ -56,4 +56,4 @@ with st.expander('📄 Features', expanded=True):
 
 # Transposing the data (optional)
    if st.checkbox("Transpose DataFrame"):
-       st.write(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
+        st.write(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
