@@ -40,19 +40,3 @@ df_analysis['selected_feature'] = df_analysis[selected_feature]
 # Exibir os resultados
 st.write(f"Analisando a diferença para a feature: {selected_feature}")
 
-# Criar o gráfico de barras para o preço médio por valor da feature selecionada
-with st.expander(f"📊 Média do Preço por {selected_feature}", expanded=False):
-    # Agrupar os dados pela feature selecionada e calcular a média do preço
-    avg_price = df_analysis.groupby('selected_feature')['price'].mean().reset_index()
-    
-    # Criar o gráfico de barras
-    plt.figure(figsize=(10,6))
-    plt.bar(avg_price['selected_feature'], avg_price['price'], color='skyblue')
-
-    # Adicionar título e rótulos aos eixos
-    plt.title(f'Média do Preço por {selected_feature}')
-    plt.xlabel(selected_feature)
-    plt.ylabel('Média do Preço')
-    
-    # Exibir o gráfico no Streamlit
-    st.pyplot(plt)
