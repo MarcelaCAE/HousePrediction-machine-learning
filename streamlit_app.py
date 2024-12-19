@@ -16,7 +16,7 @@ with st.expander('📄 Data', expanded=True):
     
     # Definir a variável target 'price' e as features
     Target = df['price']  # A variável alvo 'price'
-    Features = df.drop(columns=[["price","predicted"]])  # As features (sem a coluna 'price')
+    Features = df.drop(columns=[["price","Predicted"]])  # As features (sem a coluna 'price')
 
 # Barra lateral para escolher a feature
 with st.sidebar:
@@ -30,16 +30,16 @@ df['predicted'] = df['predicted']  # Caso já tenha a coluna de previsões no CS
 # Criar um DataFrame com a feature selecionada, preço real e previsão
 df_analysis = Features.copy()
 df_analysis['price'] = Target
-df_analysis['predicted'] = df['predicted']  # Substitua com a coluna de previsões do seu CSV
+df_analysis['Predicted'] = df['predicted']  # Substitua com a coluna de previsões do seu CSV
 
 # Calcular a diferença percentual entre o preço real e o previsto
-df_analysis['percentage_diff'] = 100 * abs(df_analysis['price'] - df_analysis['predicted']) / df_analysis['price']
+df_analysis['percentage_diff'] = 100 * abs(df_analysis['price'] - df_analysis['Predicted']) / df_analysis['price']
 
 # Adicionar a feature selecionada ao DataFrame
 df_analysis['selected_feature'] = df_analysis[selected_feature]
 
 # Filtrar o DataFrame com a feature selecionada
-df_selected = df_analysis[['price', 'predicted', 'percentage_diff', 'selected_feature']]
+df_selected = df_analysis[['price', 'Predicted', 'percentage_diff', 'selected_feature']]
 
 # Exibir os resultados
 st.write(f"Analisando a feature: {selected_feature}")
