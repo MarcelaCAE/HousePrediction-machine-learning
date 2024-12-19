@@ -143,6 +143,22 @@ with st.expander('📄 Data Understading', expanded=True):
 
 
 # Seção de Data Modeling expandida
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.preprocessing import StandardScaler
+import xgboost as xgb
+import streamlit as st
+
+# Supondo que você já tenha carregado o DataFrame df em seu código
+# Exemplo:
+# df = pd.read_csv('caminho/do/arquivo.csv')
+
 with st.expander("Data Modeling", expanded=True):
     st.write("""
     Aqui, vamos realizar o treinamento de modelos de aprendizado de máquina para prever o preço de casas com base em várias variáveis.
@@ -159,76 +175,64 @@ with st.expander("Data Modeling", expanded=True):
     st.write(f'Tamanho dos dados de treino: {len(X_train)}. Tamanho dos dados de teste: {len(X_test)}.')
 
     model = LinearRegression()
-    model.fit(X_train,y_train)
+    model.fit(X_train, y_train)
 
-    predictions = model.predict(X_test)# calculation the predictions based on price
-    predictions
-
-    eval_df = pd.DataFrame({"actual":y_test,"pred":predictions})
+    predictions = model.predict(X_test)  # Calcular as previsões
+    eval_df = pd.DataFrame({"actual": y_test, "pred": predictions})
     eval_df = eval_df.round()
+    eval_df["difference"] = round(abs(eval_df["actual"] - eval_df["pred"]), 2)  # Verificar a diferença entre os valores reais e as previsões
+    eval_df.head()  # Exibir as primeiras linhas
 
-    eval_df["difference"] = round(abs(eval_df["actual"]-eval_df["pred"]),2) # Checking the difference between actual(target varible and predictions (train features)
-    eval_df.head() # huge diference on the predicted price
-
-
-    
     # Modelos de Machine Learning
     results = {}
 
     models = {
-    'Linear Regression': LinearRegression(),
-    'Ridge': Ridge(),
-    'Lasso': Lasso(),
-    'Decision Tree': DecisionTreeRegressor(),
-    'KNN': KNeighborsRegressor(),
-    'XGBoost': xgb.XGBRegressor()
+        'Linear Regression': LinearRegression(),
+        'Ridge': Ridge(),
+        'Lasso': Lasso(),
+        'Decision Tree': DecisionTreeRegressor(),
+        'KNN': KNeighborsRegressor(),
+        'XGBoost': xgb.XGBRegressor()
     }
 
     # Treinando e avaliando os modelos
-    results = {}
     for model_name, model in models.items():
         model.fit(X_train, y_train)
         predictions = model.predict(X_test)
-    
-    MSE = mean_squared_error(y_test, predictions)
-    RMSE = np.sqrt(MSE)
-    r2 = r2_score(y_test, predictions)
-    MAE = mean_absolute_error(y_test, predictions)
-    
-    results[model_name] = {
-        'R²': r2,
-        'RMSE': RMSE,
-        'MSE': MSE,
-        'MAE': MAE
-    }
+
+        MSE = mean_squared_error(y_test, predictions)
+        RMSE = np.sqrt(MSE)
+        r2 = r2_score(y_test, predictions)
+        MAE = mean_absolute_error(y_test, predictions)
+
+        results[model_name] = {
+            'R²': r2,
+            'RMSE': RMSE,
+            'MSE': MSE,
+            'MAE': MAE
+        }
 
     results_df_ml = pd.DataFrame(results).T
     st.write("Métricas dos Modelos:", results_df_ml)
 
-    #Model1
+    # Model 1: XGBoost sem normalização
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    model1= xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1)
+    model1 = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1)
     model1.fit(X_train, y_train)
     predictions_xgb = model1.predict(X_test)
-    results_xgb_ml1 = pd.DataFrame({'Actual': y_test, 'Predicted': predictions_xgb})
-    results_xgb_ml1.head().reset_index(drop=True)
 
     model1_R2 = r2_score(y_test, predictions_xgb)
     model1_MSE = mean_squared_error(y_test, predictions_xgb)
     model1_RMSE = np.sqrt(model1_MSE)
     model1_MAE = mean_absolute_error(y_test, predictions_xgb)
 
-
-# Exibir as métricas de maneira visual usando st.metric
+    # Exibir as métricas de maneira visual usando st.metric
     st.metric("R² Score", f"{model1_R2:.2f}")
     st.metric("MSE (Mean Squared Error)", f"{model1_MSE:.2f}")
     st.metric("RMSE (Root Mean Squared Error)", f"{model1_RMSE:.2f}")
     st.metric("MAE (Mean Absolute Error)", f"{model1_MAE:.2f}")
 
-
     # Plotting Actual vs Predicted para XGBoost
-    predictions_xgb = models['XGBoost'].predict(X_test)
-
     plt.figure(figsize=(8, 6))
     plt.scatter(y_test, predictions_xgb, color='blue', alpha=0.5)
     plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
@@ -241,51 +245,45 @@ with st.expander("Data Modeling", expanded=True):
     O modelo XGBoost apresenta as melhores métricas em termos de R², RMSE e MAE, com o menor erro médio absoluto (MAE) e menor erro quadrático médio (MSE).
     """)
 
-# Model 2 -Normalization of the Data
-# Para implementar melhorias adicionais como normalização e remoção de outliers:
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # Model 2 - Normalization of the Data
+    # Para implementar melhorias adicionais como normalização e remoção de outliers:
     scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)  # Normaliza os dados de treino
+    X_test_scaled = scaler.transform(X_test)  # Normaliza os dados de teste com os mesmos parâmetros do treino
 
-    X_train_scaled = scaler.fit_transform(X_train) # assuming now the normalization
-    X_test_scaled = scaler.transform(X_test)
-
- # Initiating the Xboostedd Model
+    # Iniciando o modelo XGBoost com dados normalizados
     XGboosted_model_normalize = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1)
     XGboosted_model_normalize.fit(X_train_scaled, y_train)
-    XGboosted_model_normalize_predictions = XGboosted_model_normalize.predict(X_test_scaled) 
-    XGboosted_model_normalize_predictions
+    XGboosted_model_normalize_predictions = XGboosted_model_normalize.predict(X_test_scaled)
 
-results_df_ml_2 =  pd.DataFrame({'Actual': y_test, 'Predicted': XGboosted_model_normalize_predictions})
-results_df_ml_2.head()
+    results_df_ml_2 = pd.DataFrame({'Actual': y_test, 'Predicted': XGboosted_model_normalize_predictions})
+    results_df_ml_2.head()
 
-model2_R2 = r2_score(y_test, XGboosted_model_normalize_predictions)
-model2_MSE = mean_squared_error(y_test, XGboosted_model_normalize_predictions)
-model2_RMSE = np.sqrt(model2_MSE)
-model2_MAE = mean_absolute_error(y_test, XGboosted_model_normalize_predictions)
+    model2_R2 = r2_score(y_test, XGboosted_model_normalize_predictions)
+    model2_MSE = mean_squared_error(y_test, XGboosted_model_normalize_predictions)
+    model2_RMSE = np.sqrt(model2_MSE)
+    model2_MAE = mean_absolute_error(y_test, XGboosted_model_normalize_predictions)
 
-# Exibir as métricas de maneira visual usando st.metric
-st.metric("R² Score", f"{model2_R2:.2f}")
-st.metric("MSE (Mean Squared Error)", f"{model2_MSE:.2f}")
-st.metric("RMSE (Root Mean Squared Error)", f"{model2_RMSE:.2f}")
-st.metric("MAE (Mean Absolute Error)", f"{model2_MAE:.2f}")
+    # Exibir as métricas de maneira visual usando st.metric
+    st.metric("R² Score (Normalized)", f"{model2_R2:.2f}")
+    st.metric("MSE (Mean Squared Error) (Normalized)", f"{model2_MSE:.2f}")
+    st.metric("RMSE (Root Mean Squared Error) (Normalized)", f"{model2_RMSE:.2f}")
+    st.metric("MAE (Mean Absolute Error) (Normalized)", f"{model2_MAE:.2f}")
 
-color = '#4682B4'
-n_features = len(X.columns)
-ncols = 4  # Número de colunas fixo
-nrows = (n_features // ncols) + (n_features % ncols > 0)  # Número de linhas necessário
-fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(20, 16))
-axes = axes.flatten()
+    # Plotting histograms for feature distributions
+    color = '#4682B4'
+    n_features = len(X.columns)
+    ncols = 4  # Número de colunas fixo
+    nrows = (n_features // ncols) + (n_features % ncols > 0)  # Número de linhas necessário
+    fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(20, 16))
+    axes = axes.flatten()
 
-for i, ax in enumerate(axes):
-    if i >= n_features:
-        ax.set_visible(False)  # esconder gráficos não usados
-        continue
-    ax.hist(df.iloc[:, i], bins=30, color=color, edgecolor='black')
-    ax.set_title(df.columns[i])
+    for i, ax in enumerate(axes):
+        if i >= n_features:
+            ax.set_visible(False)  # esconder gráficos não usados
+            continue
+        ax.hist(df.iloc[:, i], bins=30, color=color, edgecolor='black')
+        ax.set_title(df.columns[i])
 
-plt.tight_layout()
-st.pyplot(fig)
-
-
-
+    plt.tight_layout()
+    st.pyplot(fig)
