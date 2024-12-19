@@ -1,15 +1,11 @@
-import streamlit as st
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Main Title of the Application
 st.title('🎈 HousePrediction - Machine Learning')
 
 st.info('This is a machine learning model to predict house prices.')
 
-# Section: Dataset Overview (Only Expander)
+# Section: Dataset Overview and Description
 with st.expander('📄 Dataset Overview', expanded=True):
     # Display the original dataset first
     st.markdown('#### Original Dataset')
@@ -49,92 +45,3 @@ with st.expander('📄 Dataset Overview', expanded=True):
     ##### **Dataset Source:** 
     [King County Houses Dataset on Kaggle](https://www.kaggle.com/datasets/minasameh55/king-country-houses-aa)
     """)
-
-# Cleaning Data Function
-def clean_data(data):
-    df = data.copy()
-    data.columns = [column.lower().replace(" ", "_") for column in data.columns]  # Standardizing column names
-    st.write("Rows with missing values:", df.isna().any(axis=1).sum())
-    st.write("Duplicate rows:", df[df.duplicated()].shape[0])
-    return df
-
-# Clean data section
-st.markdown("### 🧹 Data Cleaning")
-df_cleaned = clean_data(df)
-st.dataframe(df_cleaned.head(10))  # Display the cleaned data preview
-
-# Converting the Date to Datetime
-df_cleaned['date'] = pd.to_datetime(df_cleaned['date'])
-
-# Descriptive Statistics Function
-def descriptive_statistics(df):
-    numerical_cols = df.select_dtypes(include=['int64', 'float64']).columns
-    desc_stats = df[numerical_cols].describe().T
-    
-    iqr_values = {}
-    outlier_counts = {}
-    
-    for col in numerical_cols:
-        q1 = df[col].quantile(0.25)
-        q3 = df[col].quantile(0.75)
-        iqr = q3 - q1
-        iqr_values[col] = iqr
-        
-        lower_limit = q1 - 1.5 * iqr
-        upper_limit = q3 + 1.5 * iqr
-        
-        outliers = df[(df[col] < lower_limit) | (df[col] > upper_limit)][col]
-        outlier_counts[col] = len(outliers)
-    
-    desc_stats['IQR'] = desc_stats.index.map(iqr_values)
-    desc_stats['Outliers'] = desc_stats.index.map(outlier_counts)
-    
-    return round(desc_stats, 2)
-
-# Descriptive Statistics section
-st.markdown("### 📊 Descriptive Statistics")
-stats = descriptive_statistics(df_cleaned)
-st.write(stats)
-
-# Feature Exploration (Visualizations)
-def exploration(df):
-    color = '#18354f'  # Color for the histograms
-    numeric_cols = df.select_dtypes(include=['int64', 'float64']).columns
-    nrows, ncols = 5, 4
-    fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(20, 16))
-    
-    axes = axes.flatten()
-    for i, ax in enumerate(axes):
-        if i >= len(numeric_cols):
-            ax.set_visible(False)  # Hide unused subplots
-            continue
-        ax.hist(df[numeric_cols[i]], bins=30, color=color, edgecolor='black')
-        ax.set_title(numeric_cols[i])
-    
-    plt.tight_layout()
-    st.pyplot(fig)
-
-# Exploration section (Visualizations)
-st.markdown("### 📈 Feature Exploration")
-exploration(df_cleaned)
-
-# Target Distribution Plot
-def explore_target(df):
-    color = '#18354f'
-    plt.figure(figsize=(8, 6))
-    sns.kdeplot(df["price"], color=color)
-    st.pyplot()
-
-# Target Distribution section
-st.markdown("### 🔍 Target Variable Exploration")
-explore_target(df_cleaned)
-
-# Correlation Matrix - No expander here
-st.markdown("### 🔗 Correlation Matrix")
-st.markdown("**Visualizing the correlation between features and the target...**")
-corr = df_cleaned.corr(method='pearson').round(2)
-mask = np.triu(np.ones_like(corr, dtype=bool))
-plt.figure(figsize=(14, 10))
-sns.heatmap(corr, mask=mask, annot=True, cmap=sns.diverging_palette(230, 30, as_cmap=True), 
-            vmin=-1, vmax=1, center=0, annot_kws={"fontsize": 8})
-st.pyplot()
