@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import xgboost as xgb
+import matplotlib.pyplot as plt
 
 # Main Title of the Application
 st.title('🎈 HousePrediction - Machine Learning')
@@ -13,7 +13,6 @@ with st.expander('📄 Data', expanded=True):
     st.markdown('#### Raw Data')
     url = 'https://raw.githubusercontent.com/MarcelaCAE/HousePrediction-machine-learning/refs/heads/master/model_best_final.csv'
     df = pd.read_csv(url)
-    df.head(20)
     
     # Definir a variável target 'price' e as features
     Target = df['price']  # A variável alvo 'price'
@@ -25,7 +24,6 @@ with st.sidebar:
     selected_feature = st.selectbox('Select a feature to analyze', Features.columns)
 
 # Carregar previsões (isso deve ser feito previamente com o seu modelo, mas vamos gerar previsões aqui)
-# Assumindo que as previsões já estão no seu CSV
 df['Predicted'] = df['Predicted']  # Garantir que a coluna de previsões esteja presente
 
 # Criar um DataFrame com preço real e previsão
@@ -46,6 +44,7 @@ df_selected = df_analysis[['price', 'Predicted', 'percentage_diff', 'selected_fe
 st.write(f"Analisando a diferença para a feature: {selected_feature}")
 st.write(df_selected.head())
 
+# Criar o gráfico de linha dentro do expander
 with st.expander(f"📈 Visualização: Price vs Predicted para {selected_feature}", expanded=False):
     plt.figure(figsize=(10,6))
     plt.plot(df_analysis['selected_feature'], df_analysis['price'], label='Price', color='blue', marker='o', linestyle='-', alpha=0.7)
@@ -59,4 +58,3 @@ with st.expander(f"📈 Visualização: Price vs Predicted para {selected_featur
 
     # Exibir o gráfico no Streamlit
     st.pyplot(plt)
-
