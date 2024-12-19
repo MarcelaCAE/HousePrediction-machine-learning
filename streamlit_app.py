@@ -158,5 +158,6 @@ with st.expander("Data Modeling", expanded=True):
 
     # Copiar o dataframe para a modelagem
     df_machine_learning = df.copy()
-    df_machine_learning.head(10)
     
+    # Exibir as primeiras 10 linhas do DataFrame
+    st.write(df_machine_learning.head(10))
