@@ -23,25 +23,20 @@ with st.sidebar:
     st.header('Input Features')
     selected_feature = st.selectbox('Select a feature to analyze', Features.columns)
 
-# Criar um DataFrame com preço real e previsão
-df_analysis = Features.copy()
-df_analysis['price'] = Target
-df_analysis['Predicted'] = df['Predicted']  # Substitua com a coluna de previsões do seu CSV
-
-# Adicionar a coluna date_month ao DataFrame
-df_analysis['date_month'] = df['date_month']  # Utilizando a coluna 'date_month' existente
+# Adicionar a coluna 'Predicted' e 'date_month' ao DataFrame
+df['date_month'] = df['date_month']  # Certificando-se que a coluna 'date_month' está no DataFrame
 
 # Adicionar a feature selecionada ao DataFrame
-df_analysis['selected_feature'] = df_analysis[selected_feature]
+df['selected_feature'] = df[selected_feature]
 
-# Agrupar os dados por mês e calcular a média do preço real, do preço previsto e da feature selecionada
-monthly_avg = df_analysis.groupby('date_month')[['price', 'Predicted', 'selected_feature']].mean().reset_index()
+# Agrupar os dados por 'date_month' e calcular a média de 'price', 'Predicted' e da feature selecionada
+monthly_avg = df.groupby('date_month')[['price', 'Predicted', 'selected_feature']].mean().reset_index()
 
 # Exibir os resultados
 st.write(f"Analisando a média dos preços reais, previstos e a feature selecionada por mês")
 
-# Criar o gráfico de linha para as médias mensais de preço e preço previsto
-with st.expander(f"📊 Média Mensal do Preço Real, Preço Previsto e {selected_feature}", expanded=False):
+# Criar o gráfico de linha para as médias mensais de preço, preço previsto e a feature selecionada
+with st.expander(f"📊 Média Mensal do Preço Real, Preço Previsto e {selected_feature}", expanded=True):
     plt.figure(figsize=(12,6))
     
     # Plotando as linhas para preço real, preço previsto e a feature selecionada por mês
@@ -55,6 +50,10 @@ with st.expander(f"📊 Média Mensal do Preço Real, Preço Previsto e {selecte
     plt.ylabel('Valor Médio')
     plt.xticks(rotation=45)
     plt.legend()
+
+    # Exibir o gráfico no Streamlit
+    st.pyplot(plt)
+
 
     # Exibir o gráfico no Streamlit
     st.pyplot(plt)
