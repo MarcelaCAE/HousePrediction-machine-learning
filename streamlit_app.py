@@ -254,8 +254,8 @@ with st.expander("Data Modeling", expanded=True):
     XGboosted_model_normalize_predictions = XGboosted_model_normalize.predict(X_test_scaled) 
     XGboosted_model_normalize_predictions
 
-   results_df_ml_2 =  pd.DataFrame({'Actual': y_test, 'Predicted': XGboosted_model_normalize_predictions})
-   results_df_ml_2.head()
+results_df_ml_2 =  pd.DataFrame({'Actual': y_test, 'Predicted': XGboosted_model_normalize_predictions})
+results_df_ml_2.head()
 
 # Exibir as métricas de maneira visual usando st.metric
    st.metric("R² Score", f"{model2_R2:.2f}")
