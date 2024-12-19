@@ -113,7 +113,7 @@ with st.expander('📄 Dataset Overview', expanded=True):
             ax.set_title(numeric_cols[i])
         
         plt.tight_layout()
-        st.pyplot(fig)
+        st.pyplot(fig)  # Pass the figure explicitly
 
     # Display feature exploration plots
     exploration(df_cleaned)
@@ -122,9 +122,9 @@ with st.expander('📄 Dataset Overview', expanded=True):
     st.markdown("### 🔍 Target Variable Exploration")
     def explore_target(df):
         color = '#18354f'
-        plt.figure(figsize=(8, 6))
-        sns.kdeplot(df["price"], color=color)
-        st.pyplot()
+        fig, ax = plt.subplots(figsize=(8, 6))  # Explicitly create a figure and axis
+        sns.kdeplot(df["price"], color=color, ax=ax)
+        st.pyplot(fig)  # Pass the figure explicitly
 
     # Display target variable exploration plot
     explore_target(df_cleaned)
@@ -134,7 +134,8 @@ with st.expander('📄 Dataset Overview', expanded=True):
     st.markdown("**Visualizing the correlation between features and the target...**")
     corr = df_cleaned.corr(method='pearson').round(2)
     mask = np.triu(np.ones_like(corr, dtype=bool))
-    plt.figure(figsize=(14, 10))
+    fig, ax = plt.subplots(figsize=(14, 10))  # Explicitly create a figure and axis for the heatmap
     sns.heatmap(corr, mask=mask, annot=True, cmap=sns.diverging_palette(230, 30, as_cmap=True), 
-                vmin=-1, vmax=1, center=0, annot_kws={"fontsize": 8})
-    st.pyplot()
+                vmin=-1, vmax=1, center=0, annot_kws={"fontsize": 8}, ax=ax)
+    st.pyplot(fig)  # Pass the figure explicitly
+
