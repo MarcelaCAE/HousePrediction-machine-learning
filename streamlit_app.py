@@ -39,22 +39,28 @@ selected_feature = st.sidebar.selectbox(
 df_analysis['selected_feature'] = df_analysis[selected_feature]
 
 with st.expander('📄 Features', expanded=True):
-    # Grouping by selected feature and date_month to calculate mean
-    grouped = df_analysis.groupby(['selected_feature', 'date_month'])[['selected_feature', 'date_month']].mean()
+    # Grouping by selected feature and date_month to calculate mean of relevant columns
+    grouped = df_analysis.groupby(['selected_feature', 'date_month'])[['price', 'Predicted']].mean()
 
-# Calculating percentage changes
+    # Calculating percentage changes
     grouped['price_pct_change'] = grouped.groupby(level=0)['price'].pct_change() * 100
     grouped['Predicted_pct_change'] = grouped.groupby(level=0)['Predicted'].pct_change() * 100
 
-# Resetting the index for better readability
+    # Resetting the index for better readability
     grouped_reset = grouped.reset_index()
 
-# Displaying the data in Streamlit
+    # Displaying the data in Streamlit
     st.title("Analysis by Selected Feature")
     st.write("### Grouped Data (Only Selected Features)")
     st.dataframe(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']])
 
 # Transposing the data (optional)
-  # Transposing the data (optional)
 if st.checkbox("Transpose DataFrame"):  # Add the colon at the end of the 'if' statement
     st.write(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
+Key Changes:
+Correct Grouping:
+Instead of grouping by ['selected_feature', 'date_month'] and selecting them, we group by those columns and compute the mean for ['price', 'Predicted']:
+
+python
+Copiar código
+grouped = df_analysis.groupby(['selected_feature', 'date_month'])[['price', 'Predicted']].mean()
