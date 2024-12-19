@@ -13,20 +13,14 @@ with st.expander('📄 Data', expanded=True):
     st.markdown('#### Raw Data')
     url = 'https://raw.githubusercontent.com/MarcelaCAE/HousePrediction-machine-learning/refs/heads/master/model_best_final.csv'
     df = pd.read_csv(url)
-    df.head(20)
+    st.dataframe(df.head(20))
     
     # Definir a variável target 'price' e as features
     Target = df['price']  # A variável alvo 'price'
     Features = df.drop(columns=["price", "Predicted"])  # As features (sem a coluna 'price' e 'Predicted')
 
 with st.expander('📄 Features', expanded=True):
-    Features.head(30)
-
-# Adicionar barra lateral para selecionar a feature
-with st.sidebar:
-    st.header('Input Features')
-    selected_feature = st.selectbox('Select a feature to analyze', Features.columns)
-
+    st.dataframe(Features.head(30))
 
 # Assuming `Features`, `Target`, and `df` are already loaded
 # Create the DataFrame for analysis
