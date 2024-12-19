@@ -57,10 +57,5 @@ with st.expander('📄 Features', expanded=True):
 # Transposing the data (optional)
 if st.checkbox("Transpose DataFrame"):  # Add the colon at the end of the 'if' statement
     st.write(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
-Key Changes:
-Correct Grouping:
-Instead of grouping by ['selected_feature', 'date_month'] and selecting them, we group by those columns and compute the mean for ['price', 'Predicted']:
 
-python
-Copiar código
 grouped = df_analysis.groupby(['selected_feature', 'date_month'])[['price', 'Predicted']].mean()
