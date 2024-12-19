@@ -138,6 +138,17 @@ with st.expander('📄 Data Understading', expanded=True):
     # Display target variable exploration plot
     explore_target(df_cleaned)
 
+    df['date'] = pd.to_datetime(df['date'], errors='coerce')
+    df['date_year'] = df['date'].dt.year
+    df['date_month'] = df['date'].dt.month
+    df['date_quarter'] = df['date'].dt.quarter
+    df['date_day'] = df['date'].dt.day
+
+# Reorganizar a coluna 'price'
+   price = df.pop("price")
+   df["price"] = price
+
+
     # Correlation Matrix - Display inside the expander
     st.markdown("### 🔗 Correlation Matrix")
     st.markdown("**Visualizing the correlation between features and the target...**")
@@ -148,7 +159,14 @@ with st.expander('📄 Data Understading', expanded=True):
                 vmin=-1, vmax=1, center=0, annot_kws={"fontsize": 8}, ax=ax)
     st.pyplot(fig)  # Pass the figure explicitly
 
+    df['date'] = pd.to_datetime(df['date'], errors='coerce')
+df['date_year'] = df['date'].dt.year
+df['date_month'] = df['date'].dt.month
+df['date_quarter'] = df['date'].dt.quarter
+df['date_day'] = df['date'].dt.day
 
+price = df.pop("price")
+df["price"] = price
 
 # Supondo que você já tenha o dataframe df carregado com as colunas necessárias
 
@@ -161,3 +179,5 @@ with st.expander("Data Modeling", expanded=True):
     
     # Exibir as primeiras 10 linhas do DataFrame
     st.write(df_machine_learning.head(10))
+
+
