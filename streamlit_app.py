@@ -16,7 +16,7 @@ with st.expander('📄 Data', expanded=True):
     
     # Definir a variável target 'price' e as features
     Target = df['price']  # A variável alvo 'price'
-    Features = df.drop(columns=[["price","predicted"])  # As features (sem a coluna 'price')
+    Features = df.drop(columns=[["price","predicted"]])  # As features (sem a coluna 'price')
 
 # Barra lateral para escolher a feature
 with st.sidebar:
