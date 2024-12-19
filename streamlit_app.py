@@ -13,12 +13,11 @@ with st.expander('📄 Dataset Overview and Description', expanded=True):
     url = 'https://raw.githubusercontent.com/MarcelaCAE/HousePrediction-machine-learning/refs/heads/master/king_%20country_%20houses_aa.csv'
     df = pd.read_csv(url)
 
-    st.write('This is the original dataset used in the model:')
+    st.write('Original dataset used in the model:')
     st.dataframe(df.head())  # Interactive display of the first few rows
 
     # Additional dataset details
     st.write(f'**Number of Rows and Columns:** {df.shape[0]} rows and {df.shape[1]} columns.')
-    st.write(f'**Dataset Columns:** {", ".join(df.columns)}')
 
     # Description of the dataset columns
     st.markdown('#### Columns Description')
