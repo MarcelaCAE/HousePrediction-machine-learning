@@ -139,7 +139,6 @@ with st.expander('📄 Data Understading', expanded=True):
     st.pyplot(fig)  # Pass the figure explicitly
 
 
-
 # Seção de Data Modeling expandida
 with st.expander("Data Modeling", expanded=True):
     st.write("""
@@ -185,8 +184,8 @@ with st.expander("Data Modeling", expanded=True):
     # Treinando e avaliando os modelos
     results = {}
     for model_name, model in models.items():
-    model.fit(X_train, y_train)
-    predictions = model.predict(X_test)
+        model.fit(X_train, y_train)
+        predictions = model.predict(X_test)
     
     MSE = mean_squared_error(y_test, predictions)
     RMSE = np.sqrt(MSE)
