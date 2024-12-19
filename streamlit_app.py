@@ -152,4 +152,4 @@ with st.expander("Data Modeling", expanded=True):
     # Copiar o dataframe para a modelagem
     df_machine_learning = df.copy()
     y = df_machine_learning["price"]
-    X = df_machine_learning.drop(columns=["price"])
+    X = df_machine_learning.drop(columns=["price"]) 
