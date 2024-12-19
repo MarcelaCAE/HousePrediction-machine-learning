@@ -228,7 +228,6 @@ with st.expander("Data Modeling", expanded=True):
     'Ridge': Ridge(),
     'Lasso': Lasso(),
     'Decision Tree': DecisionTreeRegressor(),
-    'KNN': KNeighborsRegressor(),
     'XGBoost': xgb.XGBRegressor()
 }
 
