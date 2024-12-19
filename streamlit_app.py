@@ -182,7 +182,6 @@ with st.expander("Data Modeling", expanded=True):
     st.write(df_machine_learning.head(10))
 
   
-  from sklearn.linear_model import LinearRegression
 
 # Definir a variável target e as features
    y = df_machine_learning["price"]
