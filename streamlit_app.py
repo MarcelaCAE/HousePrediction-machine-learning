@@ -76,14 +76,15 @@ def exploration(df):
         ax.hist(df[numeric_cols[i]], bins=30, color=color, edgecolor='black')
         ax.set_title(numeric_cols[i]) 
     plt.tight_layout()
-    st.pyplot(fig)
+    st.pyplot(fig)  # Passar fig para evitar erro
 
 # Função para explorar o target (preço)
 def explorate_target(df):
     st.write("### Distribution of the Target Variable (Price)")
     color = '#18354f'
-    sns.kdeplot(df["price"], color=color)
-    st.pyplot()
+    fig, ax = plt.subplots()  # Criar uma figura antes de passar para o st.pyplot
+    sns.kdeplot(df["price"], color=color, ax=ax)
+    st.pyplot(fig)  # Passar fig para evitar erro
 
 # Função para exibir os outliers usando boxplot
 def exploration_outliers(df):
@@ -110,42 +111,52 @@ def exploration_outliers(df):
     
     # Ajustar layout para melhor espaçamento
     plt.tight_layout()
-    st.pyplot(fig)
+    st.pyplot(fig)  # Passar fig para evitar erro
 
 # Correlation Matrix
 def correlation_matrix(df):
     st.write("### Correlation Matrix")
-    corr = df.corr(method='pearson').round(2)
+    
+    # Remover ou preencher valores NaN antes de calcular a correlação
+    df_clean = df.select_dtypes(include=['float64', 'int64']).dropna()  # Remove colunas não numéricas e NaNs
+    corr = df_clean.corr(method='pearson').round(2)
+    
+    fig, ax = plt.subplots(figsize=(14, 10))  # Criar figura para o gráfico
     sns.set_style("white")
     mask = np.triu(np.ones_like(corr, dtype=bool))
-    plt.figure(figsize=(14, 10))
     sns.heatmap(corr, mask=mask, annot=True, cmap=sns.diverging_palette(230, 30, as_cmap=True), 
-                vmin=-1, vmax=1, center=0, annot_kws={"fontsize": 8})
-    st.pyplot()
+                vmin=-1, vmax=1, center=0, annot_kws={"fontsize": 8}, ax=ax)
+    
+    st.pyplot(fig)  # Passar fig para evitar erro
 
 # Secções principais
-st.header('Data Understanding')
+with st.expander('Data Understanding'):
+    st.header('Data Understanding')
 
-# Exibir os dados limpos
-st.subheader('Data Cleaning')
-cleaned_df = clean_data(df)
+    # Exibir os dados limpos
+    with st.expander('Data Cleaning'):
+        cleaned_df = clean_data(df)
 
-# Exibir as informações sobre o dataframe
-info_about_dataframe(df)
+    # Exibir as informações sobre o dataframe
+    with st.expander('Info About DataFrame'):
+        info_about_dataframe(df)
 
-# Exibir estatísticas descritivas
-st.subheader('Descriptive Statistics')
-descriptive_statistics(df)
+    # Exibir estatísticas descritivas
+    with st.expander('Descriptive Statistics'):
+        descriptive_statistics(df)
 
-# Explorar as distribuições das variáveis
-st.subheader('Exploration')
-exploration(df)
+    # Explorar as distribuições das variáveis
+    with st.expander('Exploration'):
+        exploration(df)
 
-# Explorar a distribuição do target (preço)
-explorate_target(df)
+    # Explorar a distribuição do target (preço)
+    with st.expander('Exploration of Target Variable'):
+        explorate_target(df)
 
-# Exibir os outliers
-exploration_outliers(df)
+    # Exibir os outliers
+    with st.expander('Exploration of Outliers'):
+        exploration_outliers(df)
 
-# Exibir a matriz de correlação
-correlation_matrix(df)
+    # Exibir a matriz de correlação
+    with st.expander('Correlation Matrix'):
+        correlation_matrix(df)
