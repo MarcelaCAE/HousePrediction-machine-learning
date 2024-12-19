@@ -223,13 +223,13 @@ with st.expander("Data Modeling", expanded=True):
     st.write(f"The smallest difference between actual and predicted price is: {min_diff}")
 
 # Opção para visualizar a distribuição de erros (opcional)
-   st.markdown("### Prediction Error Distribution")
-   import matplotlib.pyplot as plt
-   import seaborn as sns
+    st.markdown("### Prediction Error Distribution")
+    import matplotlib.pyplot as plt
+    import seaborn as sns
 
-fig, ax = plt.subplots(figsize=(8, 6))
-sns.histplot(eval_df["difference"], kde=True, color="red", ax=ax)
-ax.set_title("Distribution of Prediction Errors", fontsize=16)
+    fig, ax = plt.subplots(figsize=(8, 6))
+    sns.histplot(eval_df["difference"], kde=True, color="red", ax=ax)
+    ax.set_title("Distribution of Prediction Errors", fontsize=16)
 ax.set_xlabel("Error in Prediction", fontsize=12)
 ax.set_ylabel("Frequency", fontsize=12)
 st.pyplot(fig)
