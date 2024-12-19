@@ -235,9 +235,9 @@ with st.expander("Data Modeling", expanded=True):
     results = {}
 
 # Loop para treinar e avaliar os modelos
-   for model_name, model in models.items():
-     model.fit(X_train, y_train)
-     predictions = model.predict(X_test)
+    for model_name, model in models.items():
+       model.fit(X_train, y_train)
+       predictions = model.predict(X_test)
     
     MSE = mean_squared_error(y_test, predictions)
     RMSE = np.sqrt(MSE)
