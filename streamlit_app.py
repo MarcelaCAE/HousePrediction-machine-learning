@@ -252,8 +252,8 @@ with st.expander("Data Modeling", expanded=True):
     }
 
 # Convertendo os resultados em um DataFrame
-     results_df_ml = pd.DataFrame(results).T
-     results_df_ml = results_df_ml.round(2)
+    results_df_ml = pd.DataFrame(results).T
+    results_df_ml = results_df_ml.round(2)
 
 # Exibindo os resultados no Streamlit
      st.write("### Model Performance Comparison")
