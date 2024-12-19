@@ -47,12 +47,12 @@ with st.expander('📄 Features', expanded=True):
     grouped['Predicted_pct_change'] = grouped.groupby(level=0)['Predicted'].pct_change() * 100
 
 # Resetting the index for better readability
-   grouped_reset = grouped.reset_index()
+    grouped_reset = grouped.reset_index()
 
 # Displaying the data in Streamlit
-   st.title("Analysis by Selected Feature")
-   st.write("### Grouped Data (Only Selected Features)")
-   st.dataframe(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']])
+    st.title("Analysis by Selected Feature")
+    st.write("### Grouped Data (Only Selected Features)")
+    st.dataframe(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']])
 
 # Transposing the data (optional)
    if st.checkbox("Transpose DataFrame"):
