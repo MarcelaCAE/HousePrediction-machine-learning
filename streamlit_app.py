@@ -145,8 +145,8 @@ with st.expander('📄 Data Understading', expanded=True):
     df['date_day'] = df['date'].dt.day
 
 # Reorganizar a coluna 'price'
-   price = df.pop("price")
-   df["price"] = price
+    price = df.pop("price")
+    df["price"] = price
 
 
     # Correlation Matrix - Display inside the expander
