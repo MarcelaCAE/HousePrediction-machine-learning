@@ -7,7 +7,7 @@ st.title('🎈 HousePrediction - Machine Learning')
 st.info('This is a machine learning model to predict house prices.')
 
 # Section: Dataset Overview and Description
-with st.expander('📄 Dataset Overview and Description', expanded=True):
+with st.expander('📄 Dataset Overview', expanded=True):
     # Display the original dataset first
     st.markdown('#### Original Dataset')
     url = 'https://raw.githubusercontent.com/MarcelaCAE/HousePrediction-machine-learning/refs/heads/master/king_%20country_%20houses_aa.csv'
