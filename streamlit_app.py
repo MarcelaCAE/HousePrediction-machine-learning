@@ -184,48 +184,48 @@ with st.expander("Data Modeling", expanded=True):
   
 
 # Definir a variável target e as features
-   y = df_machine_learning["price"]
-   X = df_machine_learning.drop(columns=["price"])
+    y = df_machine_learning["price"]
+    X = df_machine_learning.drop(columns=["price"])
 
 # Dividir os dados em treino e teste
-  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+   X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # Exibir o tamanho dos dados de treino e teste
-  st.markdown(f'**100% of our data:** {len(df_machine_learning)}')
-  st.markdown(f'**70% for training data:** {len(X_train)}')
-  st.markdown(f'**30% for test data:** {len(X_test)}')
+   st.markdown(f'**100% of our data:** {len(df_machine_learning)}')
+   st.markdown(f'**70% for training data:** {len(X_train)}')
+   st.markdown(f'**30% for test data:** {len(X_test)}')
 
 # Inicializar e treinar o modelo
-  model = LinearRegression()
-  model.fit(X_train, y_train)
+   model = LinearRegression()
+   model.fit(X_train, y_train)
 
 # Realizar as previsões
-  predictions = model.predict(X_test)
+   predictions = model.predict(X_test)
 
 # Criar um DataFrame de avaliação com os resultados
-  eval_df = pd.DataFrame({"actual": y_test, "pred": predictions})
-  eval_df = eval_df.round()
-  eval_df["difference"] = round(abs(eval_df["actual"] - eval_df["pred"]), 2)
+   eval_df = pd.DataFrame({"actual": y_test, "pred": predictions})
+   eval_df = eval_df.round()
+   eval_df["difference"] = round(abs(eval_df["actual"] - eval_df["pred"]), 2)
 
 # Exibir as primeiras 10 linhas do DataFrame de avaliação no Streamlit
-  st.write("### Evaluation Results (First 10 rows):")
-  st.dataframe(eval_df.head(10))  # Mostra as 10 primeiras linhas
+   st.write("### Evaluation Results (First 10 rows):")
+   st.dataframe(eval_df.head(10))  # Mostra as 10 primeiras linhas
 
 # Exibir a diferença entre o valor real e o previsto
-  st.write(f"### Difference between Actual and Predicted Prices (rounded):")
-  st.dataframe(eval_df[["actual", "pred", "difference"]])
+   st.write(f"### Difference between Actual and Predicted Prices (rounded):")
+   st.dataframe(eval_df[["actual", "pred", "difference"]])
 
 # Analisar se a diferença é grande
-  st.markdown("### Analysis of the Prediction Differences")
-  max_diff = eval_df["difference"].max()
-  min_diff = eval_df["difference"].min()
-  st.write(f"The largest difference between actual and predicted price is: {max_diff}")
-  st.write(f"The smallest difference between actual and predicted price is: {min_diff}")
+   st.markdown("### Analysis of the Prediction Differences")
+   max_diff = eval_df["difference"].max()
+   min_diff = eval_df["difference"].min()
+   st.write(f"The largest difference between actual and predicted price is: {max_diff}")
+   st.write(f"The smallest difference between actual and predicted price is: {min_diff}")
 
 # Opção para visualizar a distribuição de erros (opcional)
-  st.markdown("### Prediction Error Distribution")
-  import matplotlib.pyplot as plt
-  import seaborn as sns
+   st.markdown("### Prediction Error Distribution")
+   import matplotlib.pyplot as plt
+   import seaborn as sns
 
 fig, ax = plt.subplots(figsize=(8, 6))
 sns.histplot(eval_df["difference"], kde=True, color="red", ax=ax)
