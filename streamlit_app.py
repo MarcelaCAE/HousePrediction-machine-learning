@@ -19,15 +19,7 @@ with st.expander('📄 Data', expanded=True):
     Target = df['price']  # A variável alvo 'price'
     Features = df.drop(columns=["price", "Predicted"])  # As features (sem a coluna 'price' e 'Predicted')
 
-# Barra lateral para escolher a feature
-import streamlit as st
-import pandas as pd
 
-# Exemplo: Carregar dados fictícios (substitua pelos seus dados reais)
-# Features: DataFrame com variáveis independentes
-# Target: Série ou coluna com os valores reais
-# df: DataFrame com as previsões (incluindo a coluna 'Predicted')
-# Certifique-se de que a coluna 'date_month' já exista no Features.
 
 # Adicionar barra lateral para selecionar a feature
 import streamlit as st
@@ -52,22 +44,26 @@ df_analysis = Features.copy()
 df_analysis['price'] = Target  # Valores reais
 df_analysis['Predicted'] = df['Predicted']  # Valores previstos
 
-# Calcular a diferença percentual
-df_analysis['percentage_diff'] = 100 * (df_analysis['Predicted'] - df_analysis['price']) / df_analysis['price']
-
-# Adicionar a feature selecionada ao DataFrame
+# Adicionar o nome da feature selecionada ao DataFrame
 df_analysis['selected_feature'] = df_analysis[selected_feature]
 
-# Realizar o agrupamento por `date_month` e calcular as médias
+# Extrair o mês da coluna `date_month` para agrupar
+df_analysis['month'] = df_analysis['date_month'].dt.month  # Extrai o número do mês
+
+# Realizar o agrupamento por `month` e calcular as médias
 df_grouped = (
-    df_analysis.groupby('date_month')
-    .agg(avg_price=('price', 'mean'),
-         avg_predicted=('Predicted', 'mean'))
+    df_analysis.groupby('month')
+    .agg(
+        avg_price=('price', 'mean'),
+        avg_predicted=('Predicted', 'mean'),
+        avg_selected_feature=('selected_feature', 'mean')
+    )
     .reset_index()
 )
 
+# Adicionar o nome da feature selecionada ao DataFrame agrupado
+df_grouped['feature_name'] = selected_feature
+
 # Exibir os resultados na interface do Streamlit
-st.write(f"Análise agregada por mês")
+st.write(f"Análise agregada por mês para a feature: {selected_feature}")
 st.dataframe(df_grouped)
-
-
