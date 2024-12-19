@@ -149,15 +149,6 @@ with st.expander('📄 Data Understading', expanded=True):
     st.pyplot(fig)  # Pass the figure explicitly
 
 
-import streamlit as st
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression, Ridge, Lasso
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.neighbors import KNeighborsRegressor
-import xgboost as xgb
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # Supondo que você já tenha o dataframe df carregado com as colunas necessárias
 
