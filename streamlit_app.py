@@ -153,9 +153,8 @@ with st.expander('📄 Data Understading', expanded=True):
 # Supondo que você já tenha o dataframe df carregado com as colunas necessárias
 
 with st.expander("Data Modeling", expanded=True):
-    st.write("""
-    Aqui, vamos realizar o treinamento de modelos de aprendizado de máquina para prever o preço de casas com base em várias variáveis.
-    """)
+    st.write("Data Modeling used")
+   
 
     # Copiar o dataframe para a modelagem
     df_machine_learning = df.copy()
