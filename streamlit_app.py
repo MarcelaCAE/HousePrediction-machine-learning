@@ -3,9 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Main Title of the Application
-st.title('🎈 HousePrediction - Machine Learning')
+st.title('🎈 Machine Learning')
 
-st.info('This is a machine learning model to predict house prices.')
+st.info('This is a machine learning model used to predict house prices.')
 
 # Section: Dataset Overview (Everything Inside This Expander)
 with st.expander('📄 Data', expanded=True):
@@ -28,14 +28,7 @@ df_analysis = Features.copy()
 df_analysis['price'] = Target  # Actual values
 df_analysis['Predicted'] = df['Predicted']  # Predicted values
 
-# Sidebar for user input
-st.sidebar.title("Dynamic Feature Selection")
-selected_feature = st.sidebar.selectbox(
-    "Select a feature to group by:",
-    df_analysis.columns,  # Assuming all columns are valid; adjust as needed
-)
 
-# Add the selected feature to the DataFrame
 df_analysis['selected_feature'] = df_analysis[selected_feature]
 
 import streamlit as st
@@ -43,7 +36,7 @@ import pandas as pd
 
 # Assuming `Features`, `Target`, and `df` are already loaded and `df_analysis` is created
 
-with st.expander('📄 Features', expanded=True):
+with st.expander('📄 Model Insigths', expanded=True):
     # Agrupar diretamente por 'date_month' e calcular a média de 'price' e 'Predicted'
     grouped = df_analysis.groupby('date_month')[['price', 'Predicted']].mean()
 
@@ -63,39 +56,41 @@ with st.expander('📄 Features', expanded=True):
 if st.checkbox("Transpor DataFrame"):
     st.write(grouped_reset[['date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
 
-st.write("### Gráfico de Tendência de Preço Real e Preço Previsto")
-fig, ax = plt.subplots(figsize=(10, 6))
+
+with st.expander('📄 Data Visualization', expanded=True):
+    st.write("### Gráfico de Tendência de Preço Real e Preço Previsto")
+    fig, ax = plt.subplots(figsize=(10, 6))
 
 # Plotando as tendências de preço real e previsto
-ax.plot(grouped_reset['date_month'], grouped_reset['price'], label='Preço Real', color='blue', marker='o')
-ax.plot(grouped_reset['date_month'], grouped_reset['Predicted'], label='Preço Previsto', color='orange', marker='o')
+    ax.plot(grouped_reset['date_month'], grouped_reset['price'], label='Preço Real', color='blue', marker='o')
+    ax.plot(grouped_reset['date_month'], grouped_reset['Predicted'], label='Preço Previsto', color='orange', marker='o')
 
 # Adicionando título e rótulos
-ax.set_title('Tendência de Preço Real vs Preço Previsto ao Longo dos Meses', fontsize=14)
-ax.set_xlabel('Mês', fontsize=12)
-ax.set_ylabel('Preço', fontsize=12)
+    ax.set_title('Tendência de Preço Real vs Preço Previsto ao Longo dos Meses', fontsize=14)
+    ax.set_xlabel('Mês', fontsize=12)
+    ax.set_ylabel('Preço', fontsize=12)
 
 # Adicionando a legenda
-ax.legend()
+    ax.legend()
 
 # Exibir o gráfico no Streamlit
-st.pyplot(fig)
+    st.pyplot(fig)
 
 # Gráfico de Variação Percentual (price_pct_change e Predicted_pct_change)
-st.write("### Gráfico de Variação Percentual de Preço Real e Preço Previsto")
-fig2, ax2 = plt.subplots(figsize=(10, 6))
+    st.write("### Graph Variation Actual vs Predicted ")
+    fig2, ax2 = plt.subplots(figsize=(10, 6)) price 
 
 # Plotando as variações percentuais de preço real e previsto
-ax2.plot(grouped_reset['date_month'], grouped_reset['price_pct_change'], label='Variação % Preço Real', color='blue', marker='o')
-ax2.plot(grouped_reset['date_month'], grouped_reset['Predicted_pct_change'], label='Variação % Preço Previsto', color='orange', marker='o')
+    ax2.plot(grouped_reset['date_month'], grouped_reset['price_pct_change'], label='Variation % actual price ', color='blue', marker='o')
+    ax2.plot(grouped_reset['date_month'], grouped_reset['Predicted_pct_change'], label='Variation % prediction price', color='orange', marker='o')
 
 # Adicionando título e rótulos
-ax2.set_title('Variação Percentual de Preço Real vs Preço Previsto ao Longo dos Meses', fontsize=14)
-ax2.set_xlabel('Mês', fontsize=12)
-ax2.set_ylabel('Variação Percentual', fontsize=12)
+    ax2.set_title('Variation Percentage actual price vs predicted over time ', fontsize=14)
+    ax2.set_xlabel('Month', fontsize=12)
+    ax2.set_ylabel('Variation Percentage', fontsize=12)
 
 # Adicionando a legenda
-ax2.legend()
+   ax2.legend()
 
 # Exibir o gráfico no Streamlit
-st.pyplot(fig2)
+  st.pyplot(fig2)
