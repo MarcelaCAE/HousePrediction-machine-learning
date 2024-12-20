@@ -42,9 +42,9 @@ with st.expander('📄 Features', expanded=True):
     # Grouping by selected feature and date_month to calculate mean of relevant columns
     grouped = df_analysis.groupby(['selected_feature', 'date_month'])[['price', 'Predicted']].mean()
 
-    # Calculating percentage changes
-    grouped['price_pct_change'] = grouped.groupby(level=0)['price'].pct_change() * 100
-    grouped['Predicted_pct_change'] = grouped.groupby(level=0)['Predicted'].pct_change() * 100
+    # Calculating percentage changes for price and Predicted
+    grouped['price_pct_change'] = grouped['price'].pct_change() * 100
+    grouped['Predicted_pct_change'] = grouped['Predicted'].pct_change() * 100
 
     # Resetting the index for better readability
     grouped_reset = grouped.reset_index()
@@ -57,5 +57,3 @@ with st.expander('📄 Features', expanded=True):
 # Transposing the data (optional)
 if st.checkbox("Transpose DataFrame"):  # Add the colon at the end of the 'if' statement
     st.write(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
-
-grouped = df_analysis.groupby(['selected_feature', 'date_month'])[['price', 'Predicted']].mean()
