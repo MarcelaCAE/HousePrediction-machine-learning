@@ -90,7 +90,7 @@ with st.expander('📄 Data Visualization', expanded=True):
     ax2.set_ylabel('Variation Percentage', fontsize=12)
 
 # Adicionando a legenda
-   ax2.legend()
+    ax2.legend()
 
 # Exibir o gráfico no Streamlit
-  st.pyplot(fig2)
+    st.pyplot(fig2)
