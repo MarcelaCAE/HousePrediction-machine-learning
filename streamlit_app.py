@@ -46,33 +46,16 @@ with st.expander('📄 Model Insigths', expanded=True):
     grouped_reset = grouped.reset_index()
 
     # Exibir os dados no Streamlit
-    st.title("Análise por Mês")
-    st.write("### Dados Agrupados por Mês")
+    st.title("Trend Price Analysis")
+    st.write("### Grouped per month")
     st.dataframe(grouped_reset[['date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']])
 
 # Transpor os dados (opcional)
-if st.checkbox("Transpor DataFrame"):
+if st.checkbox("Transpose DataFrame"):
     st.write(grouped_reset[['date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
 
 
 with st.expander('📄 Data Visualization', expanded=True):
-    st.write("### Gráfico de Tendência de Preço Real e Preço Previsto")
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-# Plotando as tendências de preço real e previsto
-    ax.plot(grouped_reset['date_month'], grouped_reset['price'], label='Preço Real', color='blue', marker='o')
-    ax.plot(grouped_reset['date_month'], grouped_reset['Predicted'], label='Preço Previsto', color='orange', marker='o')
-
-# Adicionando título e rótulos
-    ax.set_title('Tendência de Preço Real vs Preço Previsto ao Longo dos Meses', fontsize=14)
-    ax.set_xlabel('Mês', fontsize=12)
-    ax.set_ylabel('Preço', fontsize=12)
-
-# Adicionando a legenda
-    ax.legend()
-
-# Exibir o gráfico no Streamlit
-    st.pyplot(fig)
 
 # Gráfico de Variação Percentual (price_pct_change e Predicted_pct_change)
     st.write("### Graph Variation Actual vs Predicted price")
