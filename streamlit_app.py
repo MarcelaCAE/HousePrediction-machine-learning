@@ -77,8 +77,8 @@ with st.expander('📄 Data Visualization', expanded=True):
     st.pyplot(fig)
 
 # Gráfico de Variação Percentual (price_pct_change e Predicted_pct_change)
-    st.write("### Graph Variation Actual vs Predicted ")
-    fig2, ax2 = plt.subplots(figsize=(10, 6)) price 
+    st.write("### Graph Variation Actual vs Predicted price")
+    fig2, ax2 = plt.subplots(figsize=(10, 6))  
 
 # Plotando as variações percentuais de preço real e previsto
     ax2.plot(grouped_reset['date_month'], grouped_reset['price_pct_change'], label='Variation % actual price ', color='blue', marker='o')
