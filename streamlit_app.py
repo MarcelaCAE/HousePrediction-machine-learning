@@ -67,57 +67,20 @@ import pandas as pd
 
 # Assuming `Features`, `Target`, and `df` are already loaded and `df_analysis` is created
 
-with st.expander('📄 Features', expanded=True):
-    # Grouping by selected feature and date_month to calculate mean of relevant columns (price and Predicted)
-    grouped = df_analysis.groupby(['selected_feature', 'date_month'])[['price', 'Predicted']].mean()
-
-    # Calculating percentage changes for price and Predicted
-    grouped['price_pct_change'] = grouped['price'].pct_change() * 100
-    grouped['Predicted_pct_change'] = grouped['Predicted'].pct_change() * 100
-
-    # Resetting the index for better readability (flattening the multi-level index)
-    grouped_reset = grouped.reset_index()
-
-    # Displaying the data in Streamlit
-    st.title("Analysis by Selected Feature")
-    st.write("### Grouped Data (Only Selected Features)")
-    st.dataframe(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']])
-
-# Transposing the data (optional)
-if st.checkbox("Transpose DataFrame"):  # Add the colon at the end of the 'if' statement
-    st.write(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
 import streamlit as st
 import pandas as pd
 
-# Assuming `Features`, `Target`, and `df` are already loaded and `df_analysis` is created
+# Assuming df_analysis has 'date_month', 'price', 'Predicted', and 'selected_feature' columns
 
 with st.expander('📄 Features', expanded=True):
-    # Grouping by selected feature and date_month to calculate mean of relevant columns (price and Predicted)
-    grouped = df_analysis.groupby(['selected_feature', 'date_month'])[['price', 'Predicted']].mean()
+    # Convert date_month to datetime if it's not already
+    df_analysis['date_month'] = pd.to_datetime(df_analysis['date_month'], errors='coerce')
 
-    # Calculating percentage changes for price and Predicted
-    grouped['price_pct_change'] = grouped['price'].pct_change() * 100
-    grouped['Predicted_pct_change'] = grouped['Predicted'].pct_change() * 100
+    # Extract month and year from date_month to group by month
+    df_analysis['month_year'] = df_analysis['date_month'].dt.to_period('M')
 
-    # Resetting the index for better readability (flattening the multi-level index)
-    grouped_reset = grouped.reset_index()
-
-    # Displaying the data in Streamlit
-    st.title("Analysis by Selected Feature")
-    st.write("### Grouped Data (Only Selected Features)")
-    st.dataframe(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']])
-
-# Transposing the data (optional)
-if st.checkbox("Transpose DataFrame"):  # Add the colon at the end of the 'if' statement
-    st.write(grouped_reset[['selected_feature', 'date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
-import streamlit as st
-import pandas as pd
-
-# Assuming `Features`, `Target`, and `df` are already loaded and `df_analysis` is created
-
-with st.expander('📄 Features', expanded=True):
-    # Grouping by date_month and calculating mean for relevant columns (price and Predicted)
-    grouped = df_analysis.groupby('date_month')[['price', 'Predicted']].mean()
+    # Grouping by the extracted 'month_year' and calculating the mean for price and Predicted
+    grouped = df_analysis.groupby('month_year')[['price', 'Predicted']].mean()
 
     # Calculating percentage changes for price and Predicted
     grouped['price_pct_change'] = grouped['price'].pct_change() * 100
@@ -127,10 +90,10 @@ with st.expander('📄 Features', expanded=True):
     grouped_reset = grouped.reset_index()
 
     # Displaying the data in Streamlit
-    st.title("Analysis by Date Month")
-    st.write("### Grouped Data by Date Month")
-    st.dataframe(grouped_reset[['date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']])
+    st.title("Analysis by Month")
+    st.write("### Grouped Data by Month")
+    st.dataframe(grouped_reset[['month_year', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']])
 
 # Transposing the data (optional)
 if st.checkbox("Transpose DataFrame"):  # Add the colon at the end of the 'if' statement
-    st.write(grouped_reset[['date_month', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
+    st.write(grouped_reset[['month_year', 'price', 'Predicted', 'price_pct_change', 'Predicted_pct_change']].T)
