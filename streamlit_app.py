@@ -29,8 +29,6 @@ df_analysis['price'] = Target  # Actual values
 df_analysis['Predicted'] = df['Predicted']  # Predicted values
 
 
-df_analysis['selected_feature'] = df_analysis[selected_feature]
-
 import streamlit as st
 import pandas as pd
 
